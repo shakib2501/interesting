@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,12 +22,13 @@ body {
 .container {
     background: white;
     width: 90%;
-    max-width: 350px;
+    max-width: 360px;
     padding: 25px;
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 0 25px rgba(0,0,0,0.2);
     position: relative;
+    overflow: hidden;
 }
 
 h1 {
@@ -53,9 +55,14 @@ button {
     color: white;
 }
 
+#yesBtn:hover {
+    background: #ff124f;
+}
+
 #noBtn {
     background: #ddd;
     position: absolute;
+    transition: all 0.35s ease-in-out;
 }
 
 .message {
@@ -63,6 +70,7 @@ button {
     font-size: 18px;
     color: #ff2f68;
     margin-top: 20px;
+    line-height: 1.5;
 }
 
 .music-btn {
@@ -80,6 +88,7 @@ button {
 <div class="container" id="box">
 
     <h1>Sania ❤️</h1>
+
     <p>Will you be my Valentine forever? 💖</p>
 
     <button id="yesBtn">Yes 😘</button>
@@ -87,53 +96,92 @@ button {
 
     <br>
 
-    <button class="music-btn" id="playMusic">🎵 Play Our Song</button>
+    <button class="music-btn" id="playMusic">
+        🎵 Play Our Song
+    </button>
 
     <div class="message" id="loveMsg">
-        Yayyy Sania! 💍❤️<br><br>
+        Cutie! 💍❤️<br><br>
         You are my forever and always 🥰<br>
-        Happy Valentine’s Day 💖
     </div>
 
 </div>
 
+
 <!-- Background Music -->
 <audio id="bgMusic" loop>
-    <!-- Replace this link with your favorite romantic song -->
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <source src="https://drive.google.com/uc?export=download&id=1_Gm49fppNMceaiv2Cv_4d5J8cAQeoE0T" type="audio/mpeg">
 </audio>
+
 
 <script>
 
 const noBtn = document.getElementById("noBtn");
-const box = document.getElementById("box");
 const yesBtn = document.getElementById("yesBtn");
+const box = document.getElementById("box");
 const msg = document.getElementById("loveMsg");
 
 const music = document.getElementById("bgMusic");
 const playBtn = document.getElementById("playMusic");
 
-// Move No button
+
+// Move "No" button smoothly and safely
 function moveNo() {
 
     const boxRect = box.getBoundingClientRect();
+    const yesRect = yesBtn.getBoundingClientRect();
 
-    const maxX = boxRect.width - noBtn.offsetWidth;
-    const maxY = boxRect.height - noBtn.offsetHeight;
+    const padding = 15;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    let x, y;
+    let tries = 0;
+
+    do {
+
+        const maxX = boxRect.width - noBtn.offsetWidth - padding;
+        const maxY = boxRect.height - noBtn.offsetHeight - padding;
+
+        x = Math.random() * maxX + padding;
+        y = Math.random() * maxY + padding;
+
+        tries++;
+
+    } while (isOverlapping(x, y, yesRect) && tries < 50);
 
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
+
+// Check overlap with YES button
+function isOverlapping(x, y, yesRect) {
+
+    const noWidth = noBtn.offsetWidth;
+    const noHeight = noBtn.offsetHeight;
+
+    const noRect = {
+        left: x,
+        right: x + noWidth,
+        top: y,
+        bottom: y + noHeight
+    };
+
+    return !(
+        noRect.right < yesRect.left ||
+        noRect.left > yesRect.right ||
+        noRect.bottom < yesRect.top ||
+        noRect.top > yesRect.bottom
+    );
+}
+
+
+// Events for NO button
 noBtn.addEventListener("touchstart", moveNo);
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("click", moveNo);
 
 
-// Yes button
+// YES button
 yesBtn.addEventListener("click", () => {
 
     yesBtn.style.display = "none";
@@ -142,12 +190,12 @@ yesBtn.addEventListener("click", () => {
 
     msg.style.display = "block";
 
-    // Auto play music after interaction
+    // Play music after interaction
     music.play();
 });
 
 
-// Play button
+// Play music manually
 playBtn.addEventListener("click", () => {
 
     music.play();
