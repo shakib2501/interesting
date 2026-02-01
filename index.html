@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For My Sania ❤️</title>
+
+<style>
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+
+.container {
+    background: white;
+    width: 90%;
+    max-width: 350px;
+    padding: 25px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+h1 {
+    color: #ff2f68;
+    font-size: 24px;
+}
+
+p {
+    font-size: 16px;
+    color: #444;
+}
+
+button {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#yesBtn {
+    background: #ff2f68;
+    color: white;
+}
+
+#noBtn {
+    background: #ddd;
+    position: absolute;
+}
+
+.message {
+    display: none;
+    font-size: 18px;
+    color: #ff2f68;
+    margin-top: 20px;
+}
+
+.music-btn {
+    margin-top: 15px;
+    background: #6c63ff;
+    color: white;
+    font-size: 13px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="box">
+
+    <h1>Sania ❤️</h1>
+    <p>Will you be my Valentine forever? 💖</p>
+
+    <button id="yesBtn">Yes 😘</button>
+    <button id="noBtn">No 🙈</button>
+
+    <br>
+
+    <button class="music-btn" id="playMusic">🎵 Play Our Song</button>
+
+    <div class="message" id="loveMsg">
+        Yayyy Sania! 💍❤️<br><br>
+        You are my forever and always 🥰<br>
+        Happy Valentine’s Day 💖
+    </div>
+
+</div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <!-- Replace this link with your favorite romantic song -->
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const box = document.getElementById("box");
+const yesBtn = document.getElementById("yesBtn");
+const msg = document.getElementById("loveMsg");
+
+const music = document.getElementById("bgMusic");
+const playBtn = document.getElementById("playMusic");
+
+// Move No button
+function moveNo() {
+
+    const boxRect = box.getBoundingClientRect();
+
+    const maxX = boxRect.width - noBtn.offsetWidth;
+    const maxY = boxRect.height - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+
+// Yes button
+yesBtn.addEventListener("click", () => {
+
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    playBtn.style.display = "none";
+
+    msg.style.display = "block";
+
+    // Auto play music after interaction
+    music.play();
+});
+
+
+// Play button
+playBtn.addEventListener("click", () => {
+
+    music.play();
+    playBtn.innerText = "🎵 Playing...";
+});
+
+</script>
+
+</body>
+</html>
